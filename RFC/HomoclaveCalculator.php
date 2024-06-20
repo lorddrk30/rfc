@@ -137,15 +137,23 @@ class HomoclaveCalculator
         }, $this->invalidCharacters);
     }
 
-    protected function addMissingCharToFullname(){
+    protected function addMissingCharToFullname() {
         $rawFullName = $this->person->getFullNameForHomoclave();
-
-        $index = strpos($rawFullName, "Ñ")
-                 ? strpos($rawFullName, "Ñ") : strpos($rawFullName, "ñ");
-
-        while($index){
+    
+       
+        $index = strpos($rawFullName, "Ñ") !== false ? strpos($rawFullName, "Ñ") : strpos($rawFullName, "ñ");
+    
+        
+        while ($index !== false) {
             $this->fullName = substr_replace($this->fullName, '^', $index, 1);
-            $index = strpos($rawFullName, $index + 1);
+    
+           
+            $index += 1;  
+    
+         
+            $indexN = strpos($rawFullName, "Ñ", $index);
+            $indexn = strpos($rawFullName, "ñ", $index);
+            $index = $indexN !== false ? $indexN : ($indexn !== false ? $indexn : false);
         }
     }
 }
